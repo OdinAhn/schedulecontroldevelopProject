@@ -76,4 +76,16 @@ public class UserService {
                 () -> new IllegalArgumentException("없는 유저 입니다.")
         );
     }
+
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.")
+        );
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
+        return new LoginResponse(user.getId(), user.getUsername());
+    }
 }
