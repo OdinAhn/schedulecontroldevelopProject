@@ -1,10 +1,7 @@
 package com.schedulecontroldevelopproject.user.controller;
-
-import com.schedulecontroldevelopproject.user.constant.SessionConst;
 import com.schedulecontroldevelopproject.user.dto.*;
 import com.schedulecontroldevelopproject.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +16,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final LoginService loginService;
 
     @PostMapping("/users")
     public ResponseEntity<CreateUserResponse> createUser(
@@ -54,26 +50,4 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @Valid @RequestBody LoginRequest request,
-            HttpServletRequest httpServletRequest) {
-
-        LoginResponse response = loginService.login(request);
-
-        // 세션이 없으면 새로 만들고(true), 있으면 기존 세션 반환
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute(SessionConst.LOGIN_USER, response.getId());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession(false);
-        if (session != null) {
-            session.invalidate(); // 세션 완전 삭제
-        }
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
 }
