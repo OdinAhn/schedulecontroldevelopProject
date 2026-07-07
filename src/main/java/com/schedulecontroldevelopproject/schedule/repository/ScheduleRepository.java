@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    List<Schedule> findByNameContaining(String name); // 자동으로 쿼리를 만들어주는 기능
+    List<Schedule> findByUser_UserNameContaining(String name); // 자동으로 쿼리를 만들어주는 기능
 }
