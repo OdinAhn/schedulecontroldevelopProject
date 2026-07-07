@@ -8,6 +8,9 @@ import com.schedulecontroldevelopproject.schedule.repository.ScheduleRepository;
 import com.schedulecontroldevelopproject.user.entity.User;
 import com.schedulecontroldevelopproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,4 +95,10 @@ public class ScheduleService {
                 UserNotFoundException::new
         );
     }
+
+    @Transactional(readOnly = true)
+    public Page<GetSchedulesPageResponse> getSchedulesPage(Pageable pageable) {
+        return scheduleRepository.findSchedulesWithCommentCount(pageable);
+    }
+
 }
