@@ -1,5 +1,6 @@
 package com.schedulecontroldevelopproject.user.service;
 
+import com.schedulecontroldevelopproject.common.config.PasswordEncoder;
 import com.schedulecontroldevelopproject.user.dto.*;
 import com.schedulecontroldevelopproject.user.entity.User;
 import com.schedulecontroldevelopproject.user.repository.UserRepository;
@@ -16,13 +17,16 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; // 암호화
 
     @Transactional
     public CreateUserResponse save(CreateUserRequest request) {
+        String encodedPassword = passwordEncoder.encode(request.getPassword()); // 암호화 저장
+
         User user = new User(
                 request.getUsername(),
                 request.getEmail(),
-                request.getPassword()
+                encodedPassword // 암호화 된 값으로 저장
         );
         User savedUser = userRepository.save(user);
 
