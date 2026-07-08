@@ -18,12 +18,12 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY) // N:1
-    @JoinColumn(name = "schedule_id") // Comment -> Schedule
+    @ManyToOne(fetch = FetchType.LAZY) // 1:N
+    @JoinColumn(name = "schedule_id") // Schedule -> Comment
     private Schedule schedule;
 
-    @ManyToOne(fetch = FetchType.LAZY) // N:1
-    @JoinColumn(name = "user_id") // Comment -> User
+    @ManyToOne(fetch = FetchType.LAZY) // 1:N
+    @JoinColumn(name = "user_id") // User -> Comment
     private User user;
 
     private String content;
